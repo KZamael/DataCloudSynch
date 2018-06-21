@@ -1,0 +1,19 @@
+<h2>Top Persons</h2>
+
+<nav>
+  <a routerLink="/dashboard">Dashboard</a>
+  <a> | </a>
+  <a routerLink="/persons">Person List</a>
+</nav>
+
+<div class="grid grid-pad" [@fadeIn]="">
+  <a *ngFor="let person of persons" class="col-1-4"
+      routerLink="/detail/{{person.id}}">
+<!--HERE, you can route through the dashboard etc. It doesnt even have to be the "id", it could be anything, which gives us a
+                                          lot of possibilities, how you can link between elements.-->
+    <div class="module person">
+      <h4>{{person.firstName}} {{person.lastName}}</h4>
+    </div>
+  </a>
+</div>
+<app-person-search></app-person-search>

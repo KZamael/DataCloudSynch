@@ -1,0 +1,1 @@
+<%= java.lang.System.getenv("API_BASE_URL") %>

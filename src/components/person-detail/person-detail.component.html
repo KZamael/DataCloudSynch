@@ -1,0 +1,32 @@
+<div *ngIf="person">
+    <h2>{{ person.name | uppercase }} Details</h2>
+
+    <div><span>id: </span>{{ person.id }}</div>
+    <div class="vertical-menu">
+        <div display="block" width=100%>
+            <ul>
+                <li>
+                    <label>Type:
+                        <input [(ngModel)]="person.type" placeholder="@Person">
+                    </label>
+                </li>
+                <li>
+                    <label>First Name:
+                        <input [(ngModel)]="person.firstName" placeholder="givenName">
+                    </label>
+                </li>
+                <li>
+                    <label>Last Name:
+                        <input [(ngModel)]="person.lastName" placeholder="familyName">
+                    </label>
+                </li>
+                <li>
+                    <label for="birthDate">Birthdate: </label>
+                    <input id="birthDate" type="text" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }" [(ngModel)]="person.birthDate" placeholder="birthDate" bsDatepicker />
+                </li>
+            </ul>
+          </div> 
+    </div>
+    <button (click)="goBack()">go back</button>
+    <button (click)="save()">save</button>
+</div>
