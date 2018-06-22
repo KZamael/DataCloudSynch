@@ -22,5 +22,3 @@ app.compact(doc, context, function(err, compacted) {
   }
   */
 });
-
-/* Test */
