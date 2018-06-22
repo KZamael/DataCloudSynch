@@ -23,4 +23,4 @@ app.compact(doc, context, function(err, compacted) {
   */
 });
 
-/* I need to make a comment here to test something about git... delete it later, will ya? */
+/* Test */
