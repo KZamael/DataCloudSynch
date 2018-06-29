@@ -7,7 +7,7 @@ import { Observable, of } from 'rxjs'
 
 import { catchError, map, tap } from 'rxjs/operators';
 
-var jsonld = require('jsonld');
+//var jsonld = require('jsonld');
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -77,11 +77,11 @@ export class PersonService {
       .subscribe(person => console.log(jsonld.expand(JSON.parse(JSON.stringify(person)
         .replace(/ /g, '')
         .replace(/:([\w]+)/g, ':"$0"')
-      ))));*/
+      ))));
 
     jsonld.compact(doc_BE, context, function(err, compacted) {
       console.log(JSON.stringify(compacted, null, 2));
-    });
+    });*/
   }
 
   /** GET person by id. Will 404 if id not found */

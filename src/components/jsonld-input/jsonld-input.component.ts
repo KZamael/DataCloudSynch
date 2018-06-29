@@ -18,9 +18,7 @@ export class JSONLDInputComponent implements OnInit {
 
     @Input()
     person: Person;
-    //docOutput: Observable<Person>;
     docOutput: string;
-    expanded: any;
 
     constructor(private route : ActivatedRoute,
         private personService: PersonService,
@@ -47,14 +45,13 @@ export class JSONLDInputComponent implements OnInit {
         // Returns a Promise Object
         this.personService.getPerson(idOut)
         .subscribe(person => {
+            /*this.docOutput = JSON.stringify(person, null, 2)
+                .replace(/ /g, '')
+                .replace(/:([\w]+)/g, ':"$1"');*/
             this.docOutput = jsonld.expand(JSON.parse(JSON.stringify(person, null, 2)
                 .replace(/ /g, '')
-                .replace(/:([\w]+)/g, ':"$1"')));
-            console.log(this.docOutput);
+                .replace(/:([\w]+)/g, ':"$1"'))).then(
+                    result => { return result });
         });
-
-        /*var crappyJSON = '{ somePropertyWithoutQuotes: "theValue!"  }';
-        var fixedJSON = crappyJSON.replace(/(['"])?([a-zA-Z0-9_]+)(['"])?:/g, '"$2": ');
-        var aNiceObject = JSON.parse(fixedJSON);*/
     }
 }
