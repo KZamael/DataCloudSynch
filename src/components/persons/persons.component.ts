@@ -23,10 +23,10 @@ export class PersonsComponent implements OnInit {
     .subscribe(persons => this.persons = persons);
   }
 
-  add(lastName: string): void {
-    lastName = lastName.trim();
-    if(!lastName) { return; }
-    this.personService.addPerson({ lastName } as Person)
+  add(familyName: string): void {
+    familyName = familyName.trim();
+    if(!familyName) { return; }
+    this.personService.addPerson({ familyName } as Person)
       .subscribe(person => {
         this.persons.push(person);
       });

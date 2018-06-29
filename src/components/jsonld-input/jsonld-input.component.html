@@ -1,0 +1,16 @@
+<div *ngIf="person">
+    <div class="side-by-side rightSpace">
+    <h3>JSON-LD Input "Schema.org" example</h3>
+        <textarea id="markup-container" class="container" placeholder="Enter your JSON-LD markup here..."
+            rows="10">
+            {{ person | json }}
+        </textarea>
+    </div>
+    <div class="side-by-side leftSpace">
+    <h3>JSON-LD re contextualized output</h3>
+        <textarea id="markup-container" class="container" spellcheck="false"
+            rows="10">
+            {{ docOutput }}
+        </textarea>
+    </div>
+</div>

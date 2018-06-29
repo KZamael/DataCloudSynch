@@ -30,7 +30,14 @@ export class PersonDetailComponent implements OnInit {
     this.showPersonInLog(id);
 
     this.personService.getPerson(id)
-      .subscribe(person => this.person = person );
+      .subscribe(persons => this.person = persons);
+
+    // LD Mapping
+    this.personService.getPerson(id)
+      .subscribe(persons => this.person.context = persons['@context']);
+
+    this.personService.getPerson(id)
+      .subscribe(persons => this.person.type = persons['@type']);
   }
 
   goBack() : void {
@@ -48,8 +55,8 @@ export class PersonDetailComponent implements OnInit {
       subscribe(persons => console.log(
         'Id: ' + persons['id']
       + ', Context: ' + persons['@context']
-      + ', First Name: ' + persons['@givenName']
-      + ', Family Name: ' + persons['@familyName']
+      + ', First Name: ' + persons['givenName']
+      + ', Family Name: ' + persons['familyName']
       + ', Type: ' + persons['@type']
       + ', Birthdate: ' + persons['birthDate']
       ));

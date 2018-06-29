@@ -1,0 +1,14 @@
+#markup-container {
+    width: 250px;
+}
+.side-by-side {
+    display:inline-block; 
+}
+
+.rightSpace {
+    margin-right: 10px;
+}
+
+.leftSpace {
+    margin-left: 10px;
+}

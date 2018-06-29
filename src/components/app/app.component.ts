@@ -11,8 +11,5 @@ export class AppComponent {
 
   constructor(private route: ActivatedRoute) {
 
-    //let routeData = route.data as BehaviorSubject<DatevBreadcrumbSegmentData>;
-
-    //routeData.next({ title: 'Home' });
   }
 }

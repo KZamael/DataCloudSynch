@@ -2,7 +2,7 @@ export class Person {
     id: number;
     context: string;
     type: string;
-    firstName: string;
-    lastName: string;
-    birthdate: Date;
+    givenName: string;
+    familyName: string;
+    birthDate: string;
 }

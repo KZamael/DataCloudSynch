@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MessageService } from './message.service';
 import { Person } from '../../../shared/model/person';
@@ -6,7 +7,7 @@ import { Observable, of } from 'rxjs'
 
 import { catchError, map, tap } from 'rxjs/operators';
 
-
+var jsonld = require('jsonld');
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -19,17 +20,12 @@ export class PersonService {
 
   constructor(private httpClient: HttpClient, private messageService: MessageService) { }
 
-  /** Url to a web api */
-  private personsUrl = 'api/persons';
-
   // Getting JSON data
   private getBaseUrl(): string {
-
-      //Test JSON_LD
-      let url = 'http://localhost:8080'; // Url to web api
+    let url = 'http://localhost:8080'; // Url to web api
             
-      return url;
-    }
+    return url;
+  }
 
   //httpOptions.headers = httpOptions.headers.set('Authorization', 'my-new-auth-token');
 
@@ -45,6 +41,8 @@ export class PersonService {
 
   this.messageService.add('PersonService: fetched persons');
 
+  this.useJSONLD();
+
   // MOMENTAN an den in-memory-data-service angebunden.
   // INFO: https://stackoverflow.com/questions/49474048/angular-in-memory-web-api-internal-server-error  version 0.5.4 required
   return this.httpClient.get<Person[]>(url)
@@ -53,9 +51,38 @@ export class PersonService {
     );
   }
 
-/*getProperty(): Observable<Person[]> {
-    return this.getPerson(123).subscribe(persons => persons.find(person => person.id == id);
-  }*/
+  useJSONLD(): void{
+    var doc_BE = {
+      "id": "312",
+      "@context": "http://schema.org",
+      "@type": "Person",
+      "givenName": "Fulan",
+      "familyName": "AlFulani",
+      "birthDate": "1989-7-3"
+    }
+
+    var context = { 
+      "@context" : {
+        "id" : "@id",
+         "@vocab" : "http://schema.org/",
+         "@type" : "Person",
+         "firstName" : "givenName",
+         "lastName" : "familyName",
+         "birthDate" : "birthDate"
+      }
+    };
+
+    // Seems to work:
+    /*this.httpClient.get('http://localhost:8080/person/123')
+      .subscribe(person => console.log(jsonld.expand(JSON.parse(JSON.stringify(person)
+        .replace(/ /g, '')
+        .replace(/:([\w]+)/g, ':"$0"')
+      ))));*/
+
+    jsonld.compact(doc_BE, context, function(err, compacted) {
+      console.log(JSON.stringify(compacted, null, 2));
+    });
+  }
 
   /** GET person by id. Will 404 if id not found */
   getPerson(id: number): Observable<Person> {
@@ -82,8 +109,6 @@ export class PersonService {
     );
   }
 
-
-
   /** POST: add a new person to the database */
   addPerson(person: Person): Observable<Person> {
 
@@ -91,7 +116,6 @@ export class PersonService {
       .pipe(
         tap((person: Person) => this.log(`added person w/ id=${person.id}`)),
         catchError(this.handleError<Person>('addPerson', person))
-        //catchError(() => Observable.throw('Oops, something went wrong during adding'))
     );
   }
 

@@ -1,28 +1,31 @@
+<app-jsonld-input></app-jsonld-input>
+
 <div *ngIf="person">
-    <h2>{{ person.name | uppercase }} Details</h2>
+    <h3>{{ person.familyName | uppercase }} Details</h3>
 
     <div><span>id: </span>{{ person.id }}</div>
+
     <div class="vertical-menu">
         <div display="block" width=100%>
             <ul>
                 <li>
                     <label>Type:
-                        <input [(ngModel)]="person.type" placeholder="@Person">
+                        <input [(ngModel)]="person.type" placeholder="@Person" data-ng-include="selectdTemplate.path">
                     </label>
                 </li>
                 <li>
                     <label>First Name:
-                        <input [(ngModel)]="person.firstName" placeholder="givenName">
+                        <input [(ngModel)]="person.givenName" placeholder="givenName" data-ng-include="selectdTemplate.path">
                     </label>
                 </li>
                 <li>
                     <label>Last Name:
-                        <input [(ngModel)]="person.lastName" placeholder="familyName">
+                        <input [(ngModel)]="person.familyName" placeholder="familyName" data-ng-include="selectdTemplate.path">
                     </label>
                 </li>
                 <li>
                     <label for="birthDate">Birthdate: </label>
-                    <input id="birthDate" type="text" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }" [(ngModel)]="person.birthDate" placeholder="birthDate" bsDatepicker />
+                    <input id="birthDate" type="text" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }" [(ngModel)]="person.birthDate" placeholder="birthDate" bsDatepicker/>
                 </li>
             </ul>
           </div> 

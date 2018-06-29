@@ -8,13 +8,14 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { AppComponent } from './app.component';
 import { PersonsComponent } from '../persons/persons.component';
 import { PersonDetailComponent } from '../person-detail/person-detail.component';
+import { PersonSearchComponent } from '../person-search/person-search.component';
 import { MessagesComponent } from '../messages/messages.component';
 import { DashboardComponent } from '../dashboard/dashboard.component';
+import { JSONLDInputComponent } from '../jsonld-input/jsonld-input.component';
 
 import { HttpClientModule } from '@angular/common/http';
-import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { InMemoryDataService }  from '../../shared/service/data/in-memory-data.service';
-import { PersonSearchComponent } from '../person-search/person-search.component';
+/*import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { InMemoryDataService }  from '../../shared/service/data/in-memory-data.service';*/
 
 import { PersonService } from '../../shared/service/data/person.service';
 import { MessageService } from '../../shared/service/data/message.service';
@@ -28,9 +29,9 @@ import { MessageService } from '../../shared/service/data/message.service';
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
-    HttpClientInMemoryWebApiModule.forRoot(
+    /*HttpClientInMemoryWebApiModule.forRoot(
       InMemoryDataService, { dataEncapsulation: false }
-    )
+    )*/
   ],
   declarations: [
     AppComponent,
@@ -38,7 +39,8 @@ import { MessageService } from '../../shared/service/data/message.service';
     PersonDetailComponent,
     MessagesComponent,
     DashboardComponent,
-    PersonSearchComponent
+    PersonSearchComponent,
+    JSONLDInputComponent,
   ],
   providers: [
     PersonService, MessageService
