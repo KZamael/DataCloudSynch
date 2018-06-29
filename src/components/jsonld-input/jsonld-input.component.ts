@@ -45,13 +45,12 @@ export class JSONLDInputComponent implements OnInit {
         // Returns a Promise Object
         this.personService.getPerson(idOut)
         .subscribe(person => {
-            /*this.docOutput = JSON.stringify(person, null, 2)
-                .replace(/ /g, '')
-                .replace(/:([\w]+)/g, ':"$1"');*/
             this.docOutput = jsonld.expand(JSON.parse(JSON.stringify(person, null, 2)
                 .replace(/ /g, '')
-                .replace(/:([\w]+)/g, ':"$1"'))).then(
-                    result => { return result });
+                .replace(/:([\w]+)/g, ':"$1"')))
+                .then( result => { 
+                    return result 
+                });
         });
     }
 }

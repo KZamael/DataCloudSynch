@@ -23,6 +23,7 @@
     "angular-in-memory-web-api": "^0.6.0",
     "angular-jsonld": "^0.2.0",
     "core-js": "^2.5.4",
+    "hoek": "^5.0.3",
     "jsonld": "^1.0.2",
     "ngx-bootstrap": "^3.0.1",
     "python": "0.0.4",
