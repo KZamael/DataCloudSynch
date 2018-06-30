@@ -18,39 +18,77 @@ export class JSONLDInputComponent implements OnInit {
 
     @Input()
     person: Person;
-    docOutput: string;
+    docExpand: string;
+    docCompact: string;
+
+    context : any = {
+        "@context": {
+          "@vocab": "https://schema.org/",
+          "firstName": "givenName",
+          "lastName": "familyName",
+          "Person": "@type",
+          "birthDate": "birthDate"
+        }
+    };
 
     constructor(private route : ActivatedRoute,
         private personService: PersonService,
       ) { }
 
     ngOnInit() : void {
-        this.getPersonForInput();
+
         this.getPersonForOutput();
     }
 
-    getPersonForInput() : void {
+    getPersonForOutput(){
         const id = +this.route.snapshot.paramMap.get('id');
+
+        this.getPersonForInput(id);
+        this.getPersonForExpand(id);
+        this.getPersonForCompact(id);
+    }
+
+    /** Normal JSON from the Server */
+    getPersonForInput(id: number) : void {
     
         this.personService.getPerson(id)
         .subscribe( person => this.person = person );
     }
 
-    getPersonForOutput() : void {
-        const idOut = +this.route.snapshot.paramMap.get('id');
-
-        /*this.personService.getPerson(idOut)
-        .subscribe( person => this.docOutput = jsonld.expand(JSON.stringify(person, null, 2)));*/
+    /** Expanded version of the normal JSON */
+    getPersonForExpand(id: number) : void {
         
         // Returns a Promise Object
-        this.personService.getPerson(idOut)
+        this.personService.getPerson(id)
         .subscribe(person => {
-            this.docOutput = jsonld.expand(JSON.parse(JSON.stringify(person, null, 2)
-                .replace(/ /g, '')
-                .replace(/:([\w]+)/g, ':"$1"')))
+            this.docExpand = jsonld.expand(this.makeJSONWellFormed(person))
                 .then( result => { 
-                    return result 
+                    return result;
                 });
         });
+    }
+
+    getPersonForCompact(id: number) : void {
+         // Returns a Promise Object
+         this.personService.getPerson(id)
+         .subscribe(person => {
+             this.docCompact = jsonld.compact(this.makeJSONWellFormed(person), this.context)
+                 .then( result => { 
+                     return result;
+                 });
+         });
+    }
+
+    /** Creates well formed JSON-LD by quoting all unquoted Elements of the
+     *  JSON through a Regex. The Quotation is necessary for parsing JSON with the jsonld.js library.
+     */
+    makeJSONWellFormed(document: any){
+        return JSON.parse(JSON.stringify(document, null, 2)
+        .replace(/ /g, '')
+        .replace(/:([\w]+)/g, ':"$1"'));
+    }
+
+    output(inp) {
+        document.body.appendChild(document.createElement('pre')).innerHTML = inp;
     }
 }

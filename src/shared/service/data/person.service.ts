@@ -7,7 +7,7 @@ import { Observable, of } from 'rxjs'
 
 import { catchError, map, tap } from 'rxjs/operators';
 
-//var jsonld = require('jsonld');
+var jsonld = require('jsonld');
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -27,13 +27,10 @@ export class PersonService {
     return url;
   }
 
-  //httpOptions.headers = httpOptions.headers.set('Authorization', 'my-new-auth-token');
-
   /** Log a HeroService message with the MessageService */
   private log(message: string) {
     this.messageService.add('PersonService: ' + message);
   }
-
 
   /** CRUD Method: Read an Array of Persons from the Server **/
  getPersons(): Observable<Person[]> {
@@ -41,47 +38,12 @@ export class PersonService {
 
   this.messageService.add('PersonService: fetched persons');
 
-  this.useJSONLD();
-
   // MOMENTAN an den in-memory-data-service angebunden.
   // INFO: https://stackoverflow.com/questions/49474048/angular-in-memory-web-api-internal-server-error  version 0.5.4 required
   return this.httpClient.get<Person[]>(url)
     .pipe(
       catchError(this.handleError('getPersons',[]))
     );
-  }
-
-  useJSONLD(): void{
-    var doc_BE = {
-      "id": "312",
-      "@context": "http://schema.org",
-      "@type": "Person",
-      "givenName": "Fulan",
-      "familyName": "AlFulani",
-      "birthDate": "1989-7-3"
-    }
-
-    var context = { 
-      "@context" : {
-        "id" : "@id",
-         "@vocab" : "http://schema.org/",
-         "@type" : "Person",
-         "firstName" : "givenName",
-         "lastName" : "familyName",
-         "birthDate" : "birthDate"
-      }
-    };
-
-    // Seems to work:
-    /*this.httpClient.get('http://localhost:8080/person/123')
-      .subscribe(person => console.log(jsonld.expand(JSON.parse(JSON.stringify(person)
-        .replace(/ /g, '')
-        .replace(/:([\w]+)/g, ':"$0"')
-      ))));
-
-    jsonld.compact(doc_BE, context, function(err, compacted) {
-      console.log(JSON.stringify(compacted, null, 2));
-    });*/
   }
 
   /** GET person by id. Will 404 if id not found */

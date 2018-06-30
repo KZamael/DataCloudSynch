@@ -1,5 +1,7 @@
-#markup-container {
-    width: 250px;
+.container {
+    width: 400px;
+    height:425px;
+    padding: 10px;
 }
 .side-by-side {
     display:inline-block; 
@@ -12,3 +14,18 @@
 .leftSpace {
     margin-left: 10px;
 }
+
+pre {
+outline: 1px solid #ccc;
+padding: 5px; 
+margin: 5px;
+background-color: #f5f5f5;
+border: 1px solid #ccc;
+border: 1px solid rgba(0, 0, 0, 0.15); }
+.string { color: green; }
+.number { color: darkorange; }
+.boolean { color: blue; }
+.null { color: magenta; }
+.key { color: red; }
+
+ 
