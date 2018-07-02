@@ -8,8 +8,6 @@ import {
 import { Person } from '../../shared/model/person';
 import { PersonService } from '../../shared/service/data/person.service';
 
-
-
 @Component({
   selector: 'app-person-search',
   templateUrl: './person-search.component.html',

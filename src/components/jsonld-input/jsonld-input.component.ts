@@ -33,7 +33,7 @@ export class JSONLDInputComponent implements OnInit {
 
     constructor(private route : ActivatedRoute,
         private personService: PersonService,
-      ) { }
+      ) {}
 
     ngOnInit() : void {
 
@@ -61,7 +61,7 @@ export class JSONLDInputComponent implements OnInit {
         // Returns a Promise Object
         this.personService.getPerson(id)
         .subscribe(person => {
-            this.docExpand = jsonld.expand(this.makeJSONWellFormed(person))
+            this.docExpand = jsonld.expand(this.quotifyJSON(person))
                 .then( result => { 
                     return result;
                 });
@@ -72,7 +72,7 @@ export class JSONLDInputComponent implements OnInit {
          // Returns a Promise Object
          this.personService.getPerson(id)
          .subscribe(person => {
-             this.docCompact = jsonld.compact(this.makeJSONWellFormed(person), this.context)
+             this.docCompact = jsonld.compact(this.quotifyJSON(person), this.context)
                  .then( result => { 
                      return result;
                  });
@@ -82,7 +82,7 @@ export class JSONLDInputComponent implements OnInit {
     /** Creates well formed JSON-LD by quoting all unquoted Elements of the
      *  JSON through a Regex. The Quotation is necessary for parsing JSON with the jsonld.js library.
      */
-    makeJSONWellFormed(document: any){
+    quotifyJSON(document: any){
         return JSON.parse(JSON.stringify(document, null, 2)
         .replace(/ /g, '')
         .replace(/:([\w]+)/g, ':"$1"'));

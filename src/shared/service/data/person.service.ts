@@ -7,8 +7,6 @@ import { Observable, of } from 'rxjs'
 
 import { catchError, map, tap } from 'rxjs/operators';
 
-var jsonld = require('jsonld');
-
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
@@ -38,8 +36,6 @@ export class PersonService {
 
   this.messageService.add('PersonService: fetched persons');
 
-  // MOMENTAN an den in-memory-data-service angebunden.
-  // INFO: https://stackoverflow.com/questions/49474048/angular-in-memory-web-api-internal-server-error  version 0.5.4 required
   return this.httpClient.get<Person[]>(url)
     .pipe(
       catchError(this.handleError('getPersons',[]))
@@ -94,10 +90,10 @@ export class PersonService {
   }
 
 
-       // Resembles GET persons whose name contains search term, which is a query String with the search term.
+  /** Resembles GET persons whose name contains search term, which is a query String with the search term.*/
   searchPerson(term: string):Observable<Person[]> {
     if(!term.trim()) {
-    // if not search term, return empty hero array
+    // if not search term, return empty person array
       return of([]);
     }
 

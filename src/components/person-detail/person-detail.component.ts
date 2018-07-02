@@ -27,7 +27,7 @@ export class PersonDetailComponent implements OnInit {
     const id = +this.route.snapshot.paramMap.get('id');
 
     // testing
-    this.showPersonInLog(id);
+    //this.showPersonInLog(id);
 
     this.personService.getPerson(id)
       .subscribe(persons => this.person = persons);
@@ -49,7 +49,7 @@ export class PersonDetailComponent implements OnInit {
       .subscribe(() => this.goBack());
   }
 
-  /**Method which shows the mock person in the console */
+  /**Method which prints the mock person in the console */
   showPersonInLog(id: number):void {
     this.personService.getPerson(id).
       subscribe(persons => console.log(
