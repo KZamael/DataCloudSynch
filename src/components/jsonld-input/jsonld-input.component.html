@@ -17,10 +17,20 @@
         </textarea>
     </pre>
     </div>
-    <pre>
-        <h3>Another one for compaction</h3>
-        <textarea id="markup-container" class="container" spellcheck="false">
-            {{ docCompact | json }}
-        </textarea>
-    </pre>
+    <div class="side-by-side lowerLeftSpace">
+        <pre>
+            <h3>Another one for compaction</h3>
+            <textarea id="markup-container" class="container" spellcheck="false">
+                {{ docCompact | json }}
+            </textarea>
+        </pre>
+    </div>
+    <div class="side-by-side lowerRightSpace">
+        <pre>
+            <h3>@Current Context for compaction</h3>
+            <textarea id="markup-container" class="container" spellcheck="false">
+                {{ context | json }}
+            </textarea>
+        </pre>
+    </div>
 </div>

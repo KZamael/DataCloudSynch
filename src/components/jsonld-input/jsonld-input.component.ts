@@ -36,7 +36,6 @@ export class JSONLDInputComponent implements OnInit {
       ) {}
 
     ngOnInit() : void {
-
         this.getPersonForOutput();
     }
 
@@ -61,10 +60,8 @@ export class JSONLDInputComponent implements OnInit {
         // Returns a Promise Object
         this.personService.getPerson(id)
         .subscribe(person => {
-            this.docExpand = jsonld.expand(this.quotifyJSON(person))
-                .then( result => { 
-                    return result;
-                });
+            jsonld.expand(this.quotifyJSON(person))
+                .then( result => this.docExpand = result );
         });
     }
 
@@ -72,11 +69,19 @@ export class JSONLDInputComponent implements OnInit {
          // Returns a Promise Object
          this.personService.getPerson(id)
          .subscribe(person => {
-             this.docCompact = jsonld.compact(this.quotifyJSON(person), this.context)
-                 .then( result => { 
-                     return result;
-                 });
+             jsonld.compact(this.quotifyJSON(person), this.context)
+                 .then( result => this.docCompact = this.validateJSONObjects(result));
          });
+    }
+    // Validating the Type in the JSON
+    validateJSONObjects(type: any) : string {
+        if(type['@type'] == typeof("Person")){
+            console.log(true);
+            return type;
+        }
+        else {
+            console.log(false);
+        }
     }
 
     /** Creates well formed JSON-LD by quoting all unquoted Elements of the
@@ -86,9 +91,5 @@ export class JSONLDInputComponent implements OnInit {
         return JSON.parse(JSON.stringify(document, null, 2)
         .replace(/ /g, '')
         .replace(/:([\w]+)/g, ':"$1"'));
-    }
-
-    output(inp) {
-        document.body.appendChild(document.createElement('pre')).innerHTML = inp;
     }
 }
