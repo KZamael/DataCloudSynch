@@ -1,36 +1,33 @@
-<div *ngIf="person">
-    <div class="side-by-side rightSpace">
-    <pre>
-        <h3>JSON-LD Input "Schema.org" example</h3>
-        <textarea id="markup-container" class="container" 
-            placeholder="Enter your JSON-LD markup here..." spellcheck="false">
-            {{ person | json }}
-        </textarea>
-    </pre>
-    </div>
+<ng-container *ngIf="person">
 
-    <div class="side-by-side leftSpace">
-    <pre>
-        <h3>JSON-LD re contextualized output</h3>
-        <textarea id="markup-container" class="container" spellcheck="false">
-            {{ docExpand | json }}
-        </textarea>
+  <div class="my-4">
+    <h3>
+      <small>JSON-Objekt mit LD-Informationen</small>
+    </h3>
+    <pre class="text-white bg-dark"><code>{{ person | json }}</code></pre>
+  </div>
+
+  <div class="my-4">
+    <h3>
+      <small>JSON-Objekt mit LD-Informationen</small>
+    </h3>
+    <pre class="text-white bg-dark">
+        <code>{{ docExpand | json }}</code>
     </pre>
-    </div>
-    <div class="side-by-side lowerLeftSpace">
-        <pre>
-            <h3>Another one for compaction</h3>
-            <textarea id="markup-container" class="container" spellcheck="false">
-                {{ docCompact | json }}
-            </textarea>
-        </pre>
-    </div>
-    <div class="side-by-side lowerRightSpace">
-        <pre>
-            <h3>@Current Context for compaction</h3>
-            <textarea id="markup-container" class="container" spellcheck="false">
-                {{ context | json }}
-            </textarea>
-        </pre>
-    </div>
-</div>
+  </div>
+
+  <div class="my-4">
+    <h3>
+      <small>JSON-Objekt mit LD-Informationen</small>
+    </h3>
+    <pre class="text-white bg-dark"><code>{{ docCompact | json }}</code></pre>
+  </div>
+
+  <div class="my-4">
+    <h3>
+      <small>JSON-Objekt mit LD-Informationen</small>
+    </h3>
+    <pre class="text-white bg-dark"><code>{{ context | json }}</code></pre>
+  </div>
+
+</ng-container>

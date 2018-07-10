@@ -1,21 +1,24 @@
-<h2>My Persons</h2>
-<ul class="persons">
-    <li *ngFor="let person of persons">
-        <a routerLink="/detail/{{person.id}}">
-            <span class="badge">{{person.id}}</span> {{person.givenName}} {{person.familyName}}
-        </a>
-        <button class="delete" title="delete person" (click)="delete(person)">x</button>
+<ul class="list-group my-4">
 
-    </li>
+  <li *ngFor="let person of persons" class="list-group-item d-flex">
+
+    <a routerLink="/detail/{{person.id}}" class="flex-fill">
+      <span class="badge">{{person.id}}</span> {{person.givenName}} {{person.familyName}}
+    </a>
+
+    <button class="btn btn-danger btn-sm" title="Delete Person" (click)="delete(person)">Delete</button>
+
+  </li>
+
 </ul>
 
-<div>
-    <label>Person name:
-        <input #personName />
-    </label>
-    <!-- (click) passes input value to add() and then clears the input -->
-    <button (click)="add(personName.value); personName.value=''">
-        add
-    </button>
+<div class="input-group">
+
+  <input type="text" class="form-control" placeholder="Neue Person" #personName>
+  <div class="input-group-append">
+    <button class="btn btn-primary" type="button" (click)="add(personName.value); personName.value=''">Hinzufügen</button>
+  </div>
+
 </div>
-<app-person-detail [person]="selectedPerson"></app-person-detail>
+
+<!--app-person-detail [person]="selectedPerson"></app-person-detail-->
