@@ -21,25 +21,23 @@ export class JSONLDInputComponent implements OnInit {
     docExpand: string;
     docCompact: string;
 
-    context : any = {
+    context: any = {
         "@context": {
-          "@vocab": "https://schema.org/",
-          "firstName": "givenName",
-          "lastName": "familyName",
-          "Person": "@type",
-          "birthDate": "birthDate"
+            "@vocab": "https://schema.org/",
+            "firstName": "givenName",
+            "lastName": "familyName",
+            "Person": "@type",
+            "birthDate": "birthDate"
         }
     };
 
-    constructor(private route : ActivatedRoute,
-        private personService: PersonService,
-      ) {}
+    constructor(private route: ActivatedRoute, private personService: PersonService) { }
 
-    ngOnInit() : void {
+    ngOnInit(): void {
         this.getPersonForOutput();
     }
 
-    getPersonForOutput(){
+    getPersonForOutput() {
         const id = +this.route.snapshot.paramMap.get('id');
 
         this.getPersonForInput(id);
@@ -48,34 +46,34 @@ export class JSONLDInputComponent implements OnInit {
     }
 
     /** Normal JSON from the Server */
-    getPersonForInput(id: number) : void {
-    
+    getPersonForInput(id: number): void {
+
         this.personService.getPerson(id)
-        .subscribe( person => this.person = person );
+            .subscribe(person => this.person = person);
     }
 
     /** Expanded version of the normal JSON */
-    getPersonForExpand(id: number) : void {
-        
+    getPersonForExpand(id: number): void {
+
         // Returns a Promise Object
         this.personService.getPerson(id)
-        .subscribe(person => {
-            jsonld.expand(this.quotifyJSON(person))
-                .then( result => this.docExpand = result );
-        });
+            .subscribe(person => {
+                jsonld.expand(this.quotifyJSON(person))
+                    .then(result => this.docExpand = result);
+            });
     }
 
-    getPersonForCompact(id: number) : void {
-         // Returns a Promise Object
-         this.personService.getPerson(id)
-         .subscribe(person => {
-             jsonld.compact(this.quotifyJSON(person), this.context)
-                 .then( result => this.docCompact = this.validateJSONObjects(result));
-         });
+    getPersonForCompact(id: number): void {
+        // Returns a Promise Object
+        this.personService.getPerson(id)
+            .subscribe(person => {
+                jsonld.compact(this.quotifyJSON(person), this.context)
+                    .then(result => this.docCompact = this.validateJSONObjects(result));
+            });
     }
     // Validating the Type in the JSON
-    validateJSONObjects(type: any) : string {
-        if(type['@type'] == typeof("Person")){
+    validateJSONObjects(type: any): string {
+        if (type['@type'] == typeof ("Person")) {
             console.log(true);
             return type;
         }
@@ -87,9 +85,9 @@ export class JSONLDInputComponent implements OnInit {
     /** Creates well formed JSON-LD by quoting all unquoted Elements of the
      *  JSON through a Regex. The Quotation is necessary for parsing JSON with the jsonld.js library.
      */
-    quotifyJSON(document: any){
+    quotifyJSON(document: any) {
         return JSON.parse(JSON.stringify(document, null, 2)
-        .replace(/ /g, '')
-        .replace(/:([\w]+)/g, ':"$1"'));
+            .replace(/ /g, '')
+            .replace(/:([\w]+)/g, ':"$1"'));
     }
 }
