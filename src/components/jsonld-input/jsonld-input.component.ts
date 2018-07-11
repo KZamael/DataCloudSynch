@@ -20,6 +20,9 @@ export class JSONLDInputComponent implements OnInit {
     person: Person;
     docExpand: string;
     docCompact: string;
+    /** Just a string representation of the Person @type in JSON.
+    used for testing purposes. */
+    private personKey: string = "Person";
 
     context: any = {
         "@context": {
@@ -49,7 +52,7 @@ export class JSONLDInputComponent implements OnInit {
     getPersonForInput(id: number): void {
 
         this.personService.getPerson(id)
-            .subscribe(person => this.person = person);
+            .subscribe(person => this.validateJSONObject(person, 0, null));
     }
 
     /** Expanded version of the normal JSON */
@@ -59,7 +62,7 @@ export class JSONLDInputComponent implements OnInit {
         this.personService.getPerson(id)
             .subscribe(person => {
                 jsonld.expand(this.quotifyJSON(person))
-                    .then(result => this.docExpand = result);
+                    .then(result => this.validateJSONObject(person, 1, result));
             });
     }
 
@@ -68,17 +71,28 @@ export class JSONLDInputComponent implements OnInit {
         this.personService.getPerson(id)
             .subscribe(person => {
                 jsonld.compact(this.quotifyJSON(person), this.context)
-                    .then(result => this.docCompact = this.validateJSONObjects(result));
+                    .then(result => this.validateJSONObject(person, 2, result));
             });
     }
     // Validating the Type in the JSON
-    validateJSONObjects(type: any): string {
-        if (type['@type'] == typeof ("Person")) {
-            console.log(true);
-            return type;
-        }
-        else {
-            console.log(false);
+    validateJSONObject(type: any, method: number, result: any) : string {
+        let testType = type['@type'];
+        //console.log("Yes, indeed it is a [" + JSON.stringify(testType)+ "]");
+        if(Object.is(testType, this.personKey)){
+            console.log(`The given Object is a ${testType} !`);
+            switch(method){
+                case 0:
+                    return this.person = type;
+                case 1:
+                    return this.docExpand = result;
+                case 2:
+                    return this.docCompact = result;
+                default:
+                    console.log("We should never get here!");
+                    break;
+            }
+        } else {  console.log(`Error! Type is not a ${this.personKey}`); 
+            return null; 
         }
     }
 
