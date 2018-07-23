@@ -69,10 +69,10 @@ export class PersonService {
 
   /** POST: add a new person to the database */
   addPerson(person: Person): Observable<Person> {
-
+    console.log("And it also works until here..." + person.id);
     return this.httpClient.post<Person>(`${this.getBaseUrl()}/persons`, person, httpOptions)
       .pipe(
-        tap((person: Person) => this.log(`added person w/ id=${person.id}`)),
+        tap((person: Person) => console.log(`added person w/ id=${person.id}`)),
         catchError(this.handleError<Person>('addPerson', person))
     );
   }

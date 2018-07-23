@@ -12,13 +12,94 @@
 
 </ul>
 
-<div class="input-group">
+<!--app-person-form></app-person-form-->
 
-  <input type="text" class="form-control" placeholder="Neue Person" #personName>
-  <div class="input-group-append">
-    <button class="btn btn-primary" type="button" (click)="add(personName.value); personName.value=''">Hinzufügen</button>
-  </div>
+<!--{{diagnostic}}-->
+<div class="container">
+    <div class="input-group" [hidden]="submitted">
+        <form (ngSubmit)="onSubmit()" #personForm="ngForm">
+          <div>
+            <label for="vorname">Vorname</label>
+            <input type="text" name="vorname"
+                   class="form-control"
+                   required minlength="3"
+                   placeholder="Vorname" 
+                   id="vorname" 
+                   required 
+                  [(ngModel)]="model.givenName" #vorname="ngModel">
+                <div *ngIf="vorname.invalid && (vorname.dirty || vorname.touched)"
+                  class="alert alert-danger">
+                <div *ngIf="vorname.errors.required" [hidden]="vorname.valid || vorname.pristine">
+                    Vorname wird benötigt.
+                </div>
+                <div *ngIf="vorname.errors.minlength">
+                    Vorname muss mindestens 3 Zeichen betragen.
+                </div>
+              </div>
+          </div>
 
+          <div>
+            <label for="name">Name</label>
+            <input type="text"
+                   class="form-control"
+                   required minlength="4"
+                   name="name"
+                   placeholder="Neue Person" 
+                   id="name" required 
+                  [(ngModel)]="model.familyName" #name="ngModel">
+
+            <div *ngIf="name.invalid && (name.dirty || name.touched)"
+                class="alert alert-danger">
+              <div *ngIf="name.errors.required" [hidden]="name.valid || name.pristine">
+                  Name wird benötigt.
+              </div>
+              <div *ngIf="name.errors.minlength">
+                  Name muss mindestens 4 Zeichen betragen.
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label for="geburtsdatum">Geburtsdatum</label>
+            <input type="text" 
+                   name="geburtsdatum"
+                   class="form-control"
+                   placeholder="Geburtsdatum" 
+                   id="geburtsdatum" required
+                  [(ngModel)]="model.birthDate" #geburtsdatum="ngModel">
+            <div [hidden]="geburtsdatum.valid || geburtsdatum.pristine"
+                  class="alert alert-danger">
+                  Geburtsdatum wird benötigt.
+            </div>
+          </div>
+          <div>
+            <label for="type">Type</label>
+            <select class="form-control" id="type" requried>
+              <option *ngFor="let type of types" [value]="type">{{type}}</option>
+            </select>
+          </div>
+      
+          <!--button class="btn btn-primary" type="button" (click)="add(personName.value); personName.value=''">Hinzufügen</button-->
+          <button type="submit" class="btn btn-success" (click)="add(model)" [disabled]="!personForm.form.valid">Hinzufügen</button>
+          <button type="button" class="btn btn-default" (click)="newPerson(); personForm.reset()">Neue Person</button>
+        </form>
+      </div>
+      
+      <div [hidden]="!submitted">
+        <h3>Du hast folgendes hinzugefügt: </h3>
+        <div class="row">
+          <div class="col-xs-3">Vorname: </div>
+          <div class="col-xs-9 pull-left"> {{ model.givenName }}</div>
+        </div>
+        <div class="row">
+            <div class="col-xs-3">Name: </div>
+            <div class="col-xs-9 pull-left"> {{ model.familyName }}</div>
+        </div>
+        <div class="row">
+            <div class="col-xs-3">Geburtsdatum: </div>
+            <div class="col-xs-9 pull-left"> {{ model.birthDate }}</div>
+        </div>
+        <br>
+        <button class="btn btn-primary" (click)="submitted=false">Edit</button>
+      </div>
 </div>
-
-<!--app-person-detail [person]="selectedPerson"></app-person-detail-->

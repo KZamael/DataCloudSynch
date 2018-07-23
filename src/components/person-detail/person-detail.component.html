@@ -25,6 +25,8 @@
       <label for="personBirthDate">Birthdate</label>
       <input [(ngModel)]="person.birthDate" type="date" class="form-control" id="personBirthDate" name="personBirthDate" placeholder="@Person">
     </div>
+    <button (click)="goBack()">Go back</button>
+    <button (click)="save()">Save</button>
 
   </form>
 

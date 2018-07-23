@@ -1,0 +1,51 @@
+<h2>Person Form</h2>
+<h3><i>Formcontrol in a FormGroup</i></h3>
+
+{{diagnostic}}
+<form [formGroup]="personForm">
+    <div id="vorname" class="form-group">
+      <label class="center-block">Vorname:
+        <input class="form-control" formControlName="vorname" required>
+        <!--div *ngIf="vorname.invalid && (vorname.dirty || vorname.touched)" class="alert-alert-danger">
+          <div *ngIf="vorname.errors.required">
+            Vorname wird benötigt.
+          </div>
+          <div *ngIf="vorname.errors.minlength">
+            Vorname muss mindestens 3 Zeichen lang sein.
+          </div>
+        </div-->
+      </label>
+    </div>
+    
+    <div id="name" class="form-group">
+        <label class="center-block">Name:
+          <input class="form-control" formControlName="name" required>
+          <!--div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert-alert-danger">
+            <div *ngIf="name.errors.required">
+              Vorname wird benötigt.
+            </div>
+            <div *ngIf="name.errors.minlength">
+              Vorname muss mindestens 3 Zeichen lang sein.
+            </div>
+          </div-->
+        </label>
+      </div>
+    <div id="geburtsdatum" class="form-group">
+        <label class="center-block">Geburtsdatum:
+          <input class="form-control" formControlName="geburtsdatum" required>
+          <!--div *ngIf="geburtsdatum.invalid && (geburtsdatum.dirty || geburtsdatum.touched)" class="alert-alert-danger">
+            <div *ngIf="geburtsdatum.errors.required">
+              Vorname wird benötigt.
+            </div>
+            <div *ngIf="geburtsdatum.errors.minlength">
+              Vorname muss mindestens 3 Zeichen lang sein.
+            </div>
+          </div-->
+        </label>
+    </div>
+    <button type="submit" class="btn btn-success" (click)="add(model)" [disabled]="!personForm.form.valid">Hinzufügen</button>
+    <button type="button" class="btn btn-default" (click)="newPerson(); personForm.reset()">Neue Person</button>
+</form>
+<p>Form value: {{ personForm.value | json }}</p>
+<p>Form status: {{ personForm.status | json }}</p>
+<p>Birth value: {{ personForm.get('geburtsdatum').value}}</p>

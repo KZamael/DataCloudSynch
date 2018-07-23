@@ -1,7 +1,7 @@
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core'
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { PersonsComponent } from '../persons/persons.component';
 import { PersonDetailComponent } from '../person-detail/person-detail.component';
 import { PersonSearchComponent } from '../person-search/person-search.component';
+import { PersonFormComponent } from '../person-form/person-form.component';
 import { MessagesComponent } from '../messages/messages.component';
 import { DashboardComponent } from '../dashboard/dashboard.component';
 import { JSONLDInputComponent } from '../jsonld-input/jsonld-input.component';
@@ -24,6 +25,7 @@ import { MessageService } from '../../shared/service/data/message.service';
 @NgModule({
   imports: [
     BrowserModule,
+    ReactiveFormsModule,
     BrowserAnimationsModule,
     BsDatepickerModule.forRoot(),
     FormsModule,
@@ -40,6 +42,7 @@ import { MessageService } from '../../shared/service/data/message.service';
     MessagesComponent,
     DashboardComponent,
     PersonSearchComponent,
+    PersonFormComponent,
     JSONLDInputComponent,
   ],
   providers: [
