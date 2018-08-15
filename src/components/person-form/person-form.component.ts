@@ -1,7 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormArray, FormGroup, Validators } from '@angular/forms';
 import { Person } from '../../shared/model/person';
 import { PersonService } from '../../shared/service/data/person.service';
+import { isContext } from 'vm';
 
 
 @Component({
@@ -10,7 +11,7 @@ import { PersonService } from '../../shared/service/data/person.service';
     styleUrls: ['./person-form.component.css']
   })
 export class PersonFormComponent {
-    personForm: FormGroup; // personform is of type Formgroup
+    personFormComp: FormGroup; // personform is of type Formgroup
 
     constructor(private fb: FormBuilder) { //Inject the formbuilder
         this.createForm();
@@ -29,17 +30,30 @@ export class PersonFormComponent {
       'birthDate': new FormControl(this.model.birthDate, Validators.required)
     });*/
 
+    updateProfile() {
+        this.personFormComp.patchValue({
+            firstName: 'Nancy',
+            adress: {
+                street: '123 Drew Street'
+            }
+        });
+    }
+
+    onSubmit() {
+        console.warn(this.personFormComp.value);
+    }
+
     createForm() {
-        this.personForm = this.fb.group({
+        this.personFormComp = this.fb.group({
             vorname: ['', Validators.required, Validators.minLength(3) ],  // the form control called 'name'
             name: ['', Validators.required, Validators.minLength(4) ],
             geburtsdatum: ''
         });
     }
 
-    get type() { return this.personForm.get('type'); }
-    get content() { return this.personForm.get('context'); }
-    get vorname() { return this.personForm.get('vorname'); }
-    get nachname() { return this.personForm.get('nachname'); }
-    get geburtsdatum() { return this.personForm.get('geburtsdatum'); }
+    get type() { return this.personFormComp.get('type'); }
+    get content() { return this.personFormComp.get('context'); }
+    get vorname() { return this.personFormComp.get('vorname'); }
+    get nachname() { return this.personFormComp.get('nachname'); }
+    get geburtsdatum() { return this.personFormComp.get('geburtsdatum'); }
 }

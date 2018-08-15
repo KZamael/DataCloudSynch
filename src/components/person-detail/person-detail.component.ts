@@ -3,7 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { Person } from '../../shared/model/person';
+import { PersonLocal } from '../../shared/model/personLocal';
 import { PersonService } from '../../shared/service/data/person.service';
+
+var jsonld = require('jsonld');
 
 @Component({
   selector: 'app-person-detail',
@@ -12,7 +15,20 @@ import { PersonService } from '../../shared/service/data/person.service';
 })
 export class PersonDetailComponent implements OnInit {
 
-  @Input() person: Person;
+  @Input() personLocal: PersonLocal;
+           person: Person;
+           docCompact: JSON;
+           private personKey: string = "Person";
+
+           context: any = {
+              "@context": {
+                "@vocab": "http://schema.org/",
+                "firstName": "givenName",
+                "lastName": "familyName",
+                "Person": "@type",
+                "birthDate": "birthDate"
+            }
+          };
 
   constructor(private route : ActivatedRoute,
               private personService: PersonService,
@@ -26,18 +42,28 @@ export class PersonDetailComponent implements OnInit {
   getPerson() : void {
     const id = +this.route.snapshot.paramMap.get('id');
 
-    // testing
-    //this.showPersonInLog(id);
-
-    this.personService.getPerson(id)
-      .subscribe(persons => this.person = persons);
-
     // LD Mapping
     this.personService.getPerson(id)
-      .subscribe(persons => this.person.context = persons['@context']);
+      .subscribe(persons => {
+        this.person = persons;
+        this.person.context = persons['@context'];
+        this.person.type = persons['@type'];
+    });
 
+    this.getPersonForCompact(id);
+
+  }
+
+  getPersonForCompact(id: number): void {
+    // Returns a Promise Object
     this.personService.getPerson(id)
-      .subscribe(persons => this.person.type = persons['@type']);
+        .subscribe(person => {
+            jsonld.compact(this.quotifyJSON(person), this.context)
+                .then(result => {
+                  this.validateJSONObject(person, 2, result);
+                  //console.log(this.docCompact['@id']);
+              });
+        });
   }
 
   goBack() : void {
@@ -49,16 +75,34 @@ export class PersonDetailComponent implements OnInit {
       .subscribe(() => this.goBack());
   }
 
-  /**Method which prints the mock person in the console */
-  showPersonInLog(id: number):void {
-    this.personService.getPerson(id).
-      subscribe(persons => console.log(
-        'Id: ' + persons['id']
-      + ', Context: ' + persons['@context']
-      + ', First Name: ' + persons['givenName']
-      + ', Family Name: ' + persons['familyName']
-      + ', Type: ' + persons['@type']
-      + ', Birthdate: ' + persons['birthDate']
-      ));
-  }
+  // Validating the Type in the JSON
+  validateJSONObject(type: any, method: number, result: any) : string {
+    let testType = type['@type'];
+    //console.log("Yes, indeed it is a [" + JSON.stringify(testType)+ "]");
+    if(Object.is(testType, this.personKey)){
+        console.log(`The given Object is a ${testType} !`);
+        switch(method){
+            case 0:
+                //return this.person = type;
+            case 1:
+                //return this.docExpand = result;
+            case 2:
+                return this.personLocal = result;
+            default:
+                console.log("We should never get here!");
+                break;
+        }
+    } else { console.log(`Error! Type is not a ${this.personKey}`); 
+        return null; 
+    }
+}
+
+/** Creates well formed JSON-LD by quoting all unquoted Elements of the
+ *  JSON through a Regex. The Quotation is necessary for parsing JSON with the jsonld.js library.
+ */
+quotifyJSON(document: any) {
+    return JSON.parse(JSON.stringify(document, null, 2)
+        .replace(/ /g, '')
+        .replace(/:([\w]+)/g, ':"$1"'));
+}
 }

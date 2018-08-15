@@ -26,7 +26,7 @@ export class JSONLDInputComponent implements OnInit {
 
     context: any = {
         "@context": {
-            "@vocab": "https://schema.org/",
+            "@vocab": "http://schema.org/",
             "firstName": "givenName",
             "lastName": "familyName",
             "Person": "@type",
@@ -74,6 +74,7 @@ export class JSONLDInputComponent implements OnInit {
                     .then(result => this.validateJSONObject(person, 2, result));
             });
     }
+    
     // Validating the Type in the JSON
     validateJSONObject(type: any, method: number, result: any) : string {
         let testType = type['@type'];

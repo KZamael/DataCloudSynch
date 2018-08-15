@@ -45,6 +45,7 @@ export class PersonsComponent implements OnInit {
       });
   }
 
+  // CRUD imlementation: Delete
   delete(person: Person): void {
     this.persons = this.persons.filter(h => h !== person);
     this.personService.deletePerson(person.id).subscribe();
