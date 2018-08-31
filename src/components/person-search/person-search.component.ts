@@ -5,7 +5,6 @@ import {
   debounceTime, distinctUntilChanged, switchMap
 } from 'rxjs/operators';
 
-import { Person } from '../../shared/model/person';
 import { PersonService } from '../../shared/service/data/person.service';
 
 @Component({
@@ -15,7 +14,7 @@ import { PersonService } from '../../shared/service/data/person.service';
 })
 export class PersonSearchComponent implements OnInit {
   // Declare persons$ as an Observable<[]>
-  persons$: Observable<Person[]>;
+  persons$: Observable<any[]>;
 
   // A Subject is both a source of observable values and an Observable itself. You can subscribe to a Subject as you would any Observable.
   private searchTerms = new Subject<String>();

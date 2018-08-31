@@ -9,7 +9,7 @@ import { AppComponent } from './app.component';
 import { PersonsComponent } from '../persons/persons.component';
 import { PersonDetailComponent } from '../person-detail/person-detail.component';
 import { PersonSearchComponent } from '../person-search/person-search.component';
-import { PersonFormComponent } from '../person-form/person-form.component';
+import { DynamicFormComponent } from '../person-form/dynamic-form.component';
 import { MessagesComponent } from '../messages/messages.component';
 import { DashboardComponent } from '../dashboard/dashboard.component';
 import { JSONLDInputComponent } from '../jsonld-input/jsonld-input.component';
@@ -18,8 +18,10 @@ import { HttpClientModule } from '@angular/common/http';
 /*import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService }  from '../../shared/service/data/in-memory-data.service';*/
 
+import { Configuration } from './config/configuration';
 import { PersonService } from '../../shared/service/data/person.service';
 import { MessageService } from '../../shared/service/data/message.service';
+import { UiTree } from '../person-form/uitree-component';
 
 
 @NgModule({
@@ -42,11 +44,12 @@ import { MessageService } from '../../shared/service/data/message.service';
     MessagesComponent,
     DashboardComponent,
     PersonSearchComponent,
-    PersonFormComponent,
+    DynamicFormComponent,
     JSONLDInputComponent,
+    UiTree
   ],
   providers: [
-    PersonService, MessageService
+    PersonService, MessageService, Configuration
        // no need to place any providers due to the `providedIn` flag...
   ],
   bootstrap: [AppComponent]

@@ -3,7 +3,7 @@
   <li *ngFor="let person of persons" class="list-group-item d-flex">
 
     <a routerLink="/detail/{{person.id}}" class="flex-fill">
-      <span class="badge">{{person.id}}</span> {{person.givenName}} {{person.familyName}}
+      <span class="badge">{{person.id}}</span> {{person.givenName['value']}} {{person.familyName['value']}}
     </a>
 
     <button class="btn btn-danger btn-sm" title="Delete Person" (click)="delete(person)">Delete</button>
@@ -11,8 +11,6 @@
   </li>
 
 </ul>
-
-<!--app-person-form></app-person-form-->
 
 <div class="container">
     <div class="input-group" [hidden]="submitted">

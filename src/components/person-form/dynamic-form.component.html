@@ -1,0 +1,51 @@
+<form novalidate (ngSubmit)="onSubmit(form.value)" [formGroup]="form">
+    <div *ngFor="let prop of objectProps">
+      <label [attr.for]="prop">{{prop.label}}</label>
+      <div [ngSwitch]="prop.type">
+        <input *ngSwitchCase="'text'"
+          [formControlName]="prop.key"
+          [id]="prop.key" [type]="prop.type">
+        <input *ngSwitchCase="'date'"
+          [formControlName]="prop.key"
+          [id]="prop.key" [type]="prop.type"
+          type="date">
+        <div *ngSwitchCase="'PostalAddress'"
+          [id]="prop.key">
+            {{prop.type}}
+            {{prop.label}}
+            {{prop.addressLocality.label}}
+            {{prop.addressRegion.label}}
+            {{prop.postalCode.label}}
+            {{prop.streetAddress.label}}
+     
+            <!--div *ngFor="let elem of prop">
+                <label [attr.for]="elem">{{elem.label}}</label>
+                  <input
+                  [formControlName]="elem.key"
+                  [id]="elem.key" [type]="elem.type">
+            </div-->
+
+        </div>
+      </div>
+      <div class="error" *ngIf="form.get(prop.key).invalid && (form.get(prop.key).dirty || form.get(prop.key).touched)">
+        <div *ngIf="form.get(prop.key).errors.required">
+          {{prop.label}} is required.
+        </div>
+      </div>
+    </div>
+    <br />
+    <p>
+      <button (click)="save()" type="submit">Save</button>
+      <button (click)="goBack()">Go back</button>
+    </p>
+  </form>
+  <hr />
+
+  <!--strong>Form Value</strong>
+  <pre>{{ form.value | json }}</pre>
+  <strong>Form is valid:</strong> {{form.valid}}-->
+
+  <!--div>
+    <h2>Template </h2>
+    <ui-tree [data]="data" [key]="key"></ui-tree>
+  </div-->

@@ -10,7 +10,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 })
 export class PersonsComponent implements OnInit {
 
-  persons: Person[];
+  persons: any[];
   private types: string[] = ['Person', 'Event', 'Place' ];
   private initialize = new Person(null , 'https://schema.org/', this.types[0], '', '', '');
   private model = this.initialize;
@@ -28,8 +28,10 @@ export class PersonsComponent implements OnInit {
 
   // CRUD Implementation: Read
   getPersons(): void {
-    this.personService.getPersons()
-    .subscribe(persons => this.persons = persons);
+    this.personService.getPersons<any[]>()
+    .subscribe(
+      (data: any[]) => {this.persons = data,
+      console.log(this.persons)});
   }
 
   newPerson() {
@@ -37,7 +39,7 @@ export class PersonsComponent implements OnInit {
   }
 
   // CRUD implementation: Add
-  add(person: Person): void {
+  add(person: any[]): void {
     if(!person) { return; }
     this.personService.addPerson( person )
       .subscribe(person => {
@@ -46,7 +48,7 @@ export class PersonsComponent implements OnInit {
   }
 
   // CRUD imlementation: Delete
-  delete(person: Person): void {
+  delete(person: any): void {
     this.persons = this.persons.filter(h => h !== person);
     this.personService.deletePerson(person.id).subscribe();
   }

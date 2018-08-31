@@ -1,5 +1,4 @@
 import { Component, OnInit} from '@angular/core';
-import { Person } from '../../shared/model/person';
 import { PersonService } from '../../shared/service/data/person.service';
 import { fadeIn } from '../../shared/animations';
 
@@ -12,7 +11,7 @@ import { fadeIn } from '../../shared/animations';
 })
 export class DashboardComponent implements OnInit {
 
-  persons: Person[] = [];
+  persons: any[] = [];
 
   constructor(private personService: PersonService) { }
 
@@ -23,7 +22,7 @@ export class DashboardComponent implements OnInit {
   // Display only the first eight Persons
 
   getPersons(): void {
-    this.personService.getPersons()
+    this.personService.getPersons<any[]>()
         .subscribe(persons => this.persons = persons.slice(0,8));
   }
 }

@@ -2,8 +2,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { Person } from '../../shared/model/person';
-import { PersonLocal } from '../../shared/model/personLocal';
 import { PersonService } from '../../shared/service/data/person.service';
 
 var jsonld = require('jsonld');
@@ -15,20 +13,25 @@ var jsonld = require('jsonld');
 })
 export class PersonDetailComponent implements OnInit {
 
-  @Input() personLocal: PersonLocal;
-           person: Person;
-           docCompact: JSON;
-           private personKey: string = "Person";
+  @Input() 
+        /**
+        * Local context-translated person { "firstName", "lastName"
+        * instead of {"givenName", "familyName" }
+        * This translation happened through running the compaction
+        * algorithm for a more Human friendly format.
+        * 
+        **/ 
+        person: any;
+        private personKey: string = "Person";
 
-           context: any = {
-              "@context": {
-                "@vocab": "http://schema.org/",
-                "firstName": "givenName",
-                "lastName": "familyName",
-                "Person": "@type",
-                "birthDate": "birthDate"
-            }
-          };
+        context: any = {
+          "@context": {
+              "@vocab": "http://schema.org/",
+              "firstName": "givenName",
+              "lastName": "familyName",
+              "birthDate": "birthDate"
+          }
+        };
 
   constructor(private route : ActivatedRoute,
               private personService: PersonService,
@@ -42,16 +45,12 @@ export class PersonDetailComponent implements OnInit {
   getPerson() : void {
     const id = +this.route.snapshot.paramMap.get('id');
 
-    // LD Mapping
     this.personService.getPerson(id)
       .subscribe(persons => {
         this.person = persons;
-        this.person.context = persons['@context'];
-        this.person.type = persons['@type'];
     });
 
     this.getPersonForCompact(id);
-
   }
 
   getPersonForCompact(id: number): void {
@@ -61,9 +60,19 @@ export class PersonDetailComponent implements OnInit {
             jsonld.compact(this.quotifyJSON(person), this.context)
                 .then(result => {
                   this.validateJSONObject(person, 2, result);
-                  //console.log(this.docCompact['@id']);
+                  //this.showPersonInLog(this.person);
               });
         });
+  }
+
+  showPersonInLog(document: any) {
+    console.log("Person is: " 
+      + document.id + " "
+      + document['@type'] + " "
+      + document.firstName + " "
+      + document.lastName + " "
+      + document.birthDate['@value']
+    );
   }
 
   goBack() : void {
@@ -80,14 +89,13 @@ export class PersonDetailComponent implements OnInit {
     let testType = type['@type'];
     //console.log("Yes, indeed it is a [" + JSON.stringify(testType)+ "]");
     if(Object.is(testType, this.personKey)){
-        console.log(`The given Object is a ${testType} !`);
         switch(method){
             case 0:
                 //return this.person = type;
             case 1:
                 //return this.docExpand = result;
             case 2:
-                return this.personLocal = result;
+                return this.person = this.stripIdForParsing(result);
             default:
                 console.log("We should never get here!");
                 break;
@@ -95,14 +103,26 @@ export class PersonDetailComponent implements OnInit {
     } else { console.log(`Error! Type is not a ${this.personKey}`); 
         return null; 
     }
-}
+  }
 
-/** Creates well formed JSON-LD by quoting all unquoted Elements of the
- *  JSON through a Regex. The Quotation is necessary for parsing JSON with the jsonld.js library.
- */
-quotifyJSON(document: any) {
+  /** Strip an Id from its @ value for preventing errors. These errors
+   *  oddly enough, occur whenever one does use a normal String for the identifier.
+   **/
+
+  stripIdForParsing(document: any) {
+    let result = JSON.parse(JSON.stringify(document, null, 2)
+      .replace(/ /g, '')
+      .replace(/"@id"/gm, '"id"'));
+    console.log(result);
+    return result;
+  }
+
+  /** Creates well formed JSON-LD by quoting all unquoted Elements of the
+  *  JSON through a Regex. The Quotation is necessary for parsing JSON with the jsonld.js library.
+  **/
+  quotifyJSON(document: any) {
     return JSON.parse(JSON.stringify(document, null, 2)
-        .replace(/ /g, '')
-        .replace(/:([\w]+)/g, ':"$1"'));
-}
-}
+        .replace(/ /gm, '')
+        .replace(/:([\w]+)/gm, ':"$1"'));
+    }
+  }

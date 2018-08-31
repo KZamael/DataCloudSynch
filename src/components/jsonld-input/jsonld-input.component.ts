@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { Location } from '@angular/common';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
-import { Person } from '../../shared/model/person';
 import { PersonService } from '../../shared/service/data/person.service';
 
 var jsonld = require('jsonld');
@@ -17,7 +16,7 @@ var jsonld = require('jsonld');
 export class JSONLDInputComponent implements OnInit {
 
     @Input()
-    person: Person;
+    person: any;
     docExpand: string;
     docCompact: string;
     /** Just a string representation of the Person @type in JSON.
@@ -29,7 +28,6 @@ export class JSONLDInputComponent implements OnInit {
             "@vocab": "http://schema.org/",
             "firstName": "givenName",
             "lastName": "familyName",
-            "Person": "@type",
             "birthDate": "birthDate"
         }
     };
@@ -67,6 +65,7 @@ export class JSONLDInputComponent implements OnInit {
     }
 
     getPersonForCompact(id: number): void {
+        
         // Returns a Promise Object
         this.personService.getPerson(id)
             .subscribe(person => {

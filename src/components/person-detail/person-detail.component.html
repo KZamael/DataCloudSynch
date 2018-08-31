@@ -2,31 +2,37 @@
 
 <div *ngIf="person" class="my-4">
 
-  <h3>Abgeleitetes Formular</h3>
+  <!--h3>Abgeleitetes Template driven Form</h3>
 
   <form>
-
     <div class="form-group">
       <label for="personType">Type</label>
-      <input [(ngModel)]="person.type" class="form-control" id="personType" name="personType" placeholder="@Person">
+      <input [(ngModel)]="person['@type']" class="form-control" id="personType" name="personType" placeholder="@Person">
     </div>
 
     <div class="form-group">
-      <label for="personGivenName">Given Name</label>
-      <input [(ngModel)]="person.givenName" class="form-control" id="personGivenName" name="personGivenName" placeholder="@Person">
+      <label for="personGivenName">First Name</label>
+      <input [(ngModel)]="person.firstName" class="form-control" id="personGivenName" name="personGivenName" placeholder="@Person">
     </div>
 
     <div class="form-group">
-      <label for="personFamilyName">Family Name</label>
-      <input [(ngModel)]="person.familyName" class="form-control" id="personFamilyName" name="personFamilyName" placeholder="@Person">
+      <label for="personFamilyName">Last Name</label>
+      <input [(ngModel)]="person.lastName" class="form-control" id="personFamilyName" name="personFamilyName" placeholder="@Person">
     </div>
 
     <div class="form-group">
       <label for="personBirthDate">Birthdate</label>
-      <input [(ngModel)]="person.birthDate" type="date" class="form-control" id="personBirthDate" name="personBirthDate" placeholder="@Person">
+      <input [(ngModel)]="person.birthDate['@value']" type="date" class="form-control" id="personBirthDate" name="personBirthDate" placeholder="@Person">
     </div>
+
+    <pre class="text-white bg-dark">
+        <code>{{ person | json }}</code>
+    </pre>
     <button (click)="goBack()">Go back</button>
     <button (click)="save()">Save</button>
 
-  </form>
+  </form-->
+
+  <h2>Angular dynamic reactive Form</h2>
+  <app-dynamic-form [dataObject]="person"></app-dynamic-form>
 </div>

@@ -9,6 +9,5 @@ import { ActivatedRoute } from '@angular/router';
 export class AppComponent {
 
   constructor(private route: ActivatedRoute) {
-
   }
 }
