@@ -79,7 +79,7 @@ export class JSONLDInputComponent implements OnInit {
         let testType = type['@type'];
         //console.log("Yes, indeed it is a [" + JSON.stringify(testType)+ "]");
         if(Object.is(testType, this.personKey)){
-            console.log(`The given Object is a ${testType} !`);
+            //console.log(`The given Object is a ${testType} !`);
             switch(method){
                 case 0:
                     return this.person = type;

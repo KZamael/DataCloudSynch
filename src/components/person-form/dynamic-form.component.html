@@ -1,35 +1,39 @@
 <form novalidate (ngSubmit)="onSubmit(form.value)" [formGroup]="form">
-    <div *ngFor="let prop of objectProps">
+    <div *ngFor="let prop of objectProps; let i = index" class="form-group">
       <label [attr.for]="prop">{{prop.label}}</label>
-      <div [ngSwitch]="prop.type">
+      <div [ngSwitch]="prop['@type'] || prop.key">
         <input *ngSwitchCase="'text'"
           [formControlName]="prop.key"
-          [id]="prop.key" [type]="prop.type">
+          [id]="prop.key" [type]="prop.type"
+          type="text">
         <input *ngSwitchCase="'date'"
           [formControlName]="prop.key"
           [id]="prop.key" [type]="prop.type"
           type="date">
-        <div *ngSwitchCase="'PostalAddress'"
-          [id]="prop.key">
-            {{prop.type}}
-            {{prop.label}}
-            {{prop.addressLocality.label}}
-            {{prop.addressRegion.label}}
-            {{prop.postalCode.label}}
-            {{prop.streetAddress.label}}
-     
-            <!--div *ngFor="let elem of prop">
-                <label [attr.for]="elem">{{elem.label}}</label>
-                  <input
-                  [formControlName]="elem.key"
-                  [id]="elem.key" [type]="elem.type">
-            </div-->
-
+        <div *ngSwitchCase="'address'"
+          [id]="prop.key"
+          class="form-group">
+          <label>{{objectProps[0][0].label}}</label>
+            <!--{{objectProps[0][0].label | json}}-->
+          <ul *ngFor="let element of nestedObjectProps; let j = index">
+                <label [attr.for]="element">{{element[j+1].label}}</label>
+                <div>
+                  <input 
+                  [id]="element"
+                  value='{{element[j+1].value}}'
+                  [formControlName]=""
+                  [type]="element['@type']"
+                  type="text">
+              </div>
+          </ul>
         </div>
       </div>
-      <div class="error" *ngIf="form.get(prop.key).invalid && (form.get(prop.key).dirty || form.get(prop.key).touched)">
+      <div class="error alert alert-danger" *ngIf="form.get(prop.key).invalid && (form.get(prop.key).dirty || form.get(prop.key).touched)">
         <div *ngIf="form.get(prop.key).errors.required">
           {{prop.label}} is required.
+        </div>
+        <div *ngIf="form.get(prop.key).errors.minlength">
+            {{prop.label}} should contain not more than {{form.get(prop.key).errors.minlength}} characters.
         </div>
       </div>
     </div>

@@ -22,6 +22,7 @@ export class PersonDetailComponent implements OnInit {
         * 
         **/ 
         person: any;
+        flatFormPerson: any;
         private personKey: string = "Person";
 
         context: any = {
@@ -45,12 +46,13 @@ export class PersonDetailComponent implements OnInit {
   getPerson() : void {
     const id = +this.route.snapshot.paramMap.get('id');
 
-    this.personService.getPerson(id)
-      .subscribe(persons => {
-        this.person = persons;
-    });
+    /*this.personService.getPerson(id)
+    .subscribe(persons => {
+      this.person = persons;
+  });*/
 
     this.getPersonForCompact(id);
+    this.getPersonForFlatten(id);
   }
 
   getPersonForCompact(id: number): void {
@@ -60,19 +62,19 @@ export class PersonDetailComponent implements OnInit {
             jsonld.compact(this.quotifyJSON(person), this.context)
                 .then(result => {
                   this.validateJSONObject(person, 2, result);
-                  //this.showPersonInLog(this.person);
               });
         });
   }
 
-  showPersonInLog(document: any) {
-    console.log("Person is: " 
-      + document.id + " "
-      + document['@type'] + " "
-      + document.firstName + " "
-      + document.lastName + " "
-      + document.birthDate['@value']
-    );
+  getPersonForFlatten(id: number): void {
+    // Returns a Promise Object
+    this.personService.getPerson(id)
+        .subscribe(person => {
+            jsonld.flatten(this.quotifyJSON(person), this.context)
+                .then(result => {
+                  this.validateJSONObject(person, 3, result);
+              });
+        });
   }
 
   goBack() : void {
@@ -96,6 +98,8 @@ export class PersonDetailComponent implements OnInit {
                 //return this.docExpand = result;
             case 2:
                 return this.person = this.stripIdForParsing(result);
+            case 3:
+                return this.flatFormPerson = this.stripIdForParsing(result);
             default:
                 console.log("We should never get here!");
                 break;
