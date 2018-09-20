@@ -56,6 +56,7 @@ export class PersonService {
    /** PUT: update an already existing Person by its id */
    updatePerson<T>(person: any ): Observable<T> {
     const id = typeof person === 'number' ? person: person.id;
+    console.log(id);
     const url = `${this.getBaseUrl()}/person${id}`;
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');

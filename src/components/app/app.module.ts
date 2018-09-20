@@ -15,13 +15,13 @@ import { DashboardComponent } from '../dashboard/dashboard.component';
 import { JSONLDInputComponent } from '../jsonld-input/jsonld-input.component';
 
 import { HttpClientModule } from '@angular/common/http';
-/*import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { InMemoryDataService }  from '../../shared/service/data/in-memory-data.service';*/
+import { MatFormFieldModule, MatNativeDateModule, MatInputModule } from '@angular/material';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 import { Configuration } from './config/configuration';
 import { PersonService } from '../../shared/service/data/person.service';
 import { MessageService } from '../../shared/service/data/message.service';
-import { UiTree } from '../person-form/uitree-component';
+//import { UiTree } from '../person-form/uitree-component';
 
 
 @NgModule({
@@ -29,13 +29,13 @@ import { UiTree } from '../person-form/uitree-component';
     BrowserModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    BsDatepickerModule.forRoot(),
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
-    /*HttpClientInMemoryWebApiModule.forRoot(
-      InMemoryDataService, { dataEncapsulation: false }
-    )*/
+    MatInputModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   declarations: [
     AppComponent,
@@ -46,7 +46,7 @@ import { UiTree } from '../person-form/uitree-component';
     PersonSearchComponent,
     DynamicFormComponent,
     JSONLDInputComponent,
-    UiTree
+    //UiTree
   ],
   providers: [
     PersonService, MessageService, Configuration
